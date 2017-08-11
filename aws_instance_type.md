@@ -1,0 +1,3 @@
+# AWS INSTANCE TYPE LIST
+
+t2.nano
