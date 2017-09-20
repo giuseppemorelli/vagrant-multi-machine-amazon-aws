@@ -50,20 +50,24 @@ gmdotnet:
           aliases: ["alias.gmweb", "alias2.gmweb"]  # alias for same ip in your file hosts, leave blank for no aliases
       # RSYNC FOLDERS
       rsync:
-      #    - folder:
-      #        host_folder: /mnt/extra/rsync
-      #        vagrant_folder: /mnt/extra/rsync
-      #        options:
-      #            - "-a"
-      #            - "-r"
-      #            - "-v"
-      #            - "-z"
-      #            - "--delete"
-      #    - folder:
-      #        host_folder: /mnt/extra/rsync2
-      #        vagrant_folder: /mnt/extra/rsync2
-      #        options:
-      #            - "-a"
-      #            - "-r"
-      #            - "-v"
-      #            - "-z"
+#          - folder:
+#              host_folder: /mnt/extra/rsync
+#              vagrant_folder: /mnt/extra/rsync
+#              options:
+#                  - "-a"
+#                  - "-r"
+#                  - "-v"
+#                  - "-z"
+#                  - "--delete"
+#              exclude:
+#                  - "myfolder"
+#          - folder:
+#              host_folder: /mnt/extra/rsync2
+#              vagrant_folder: /mnt/extra/rsync2
+#              options:
+#                  - "-a"
+#                  - "-r"
+#                  - "-v"
+#                  - "-z"
+#              exclude:
+#                  - "myfolder"
