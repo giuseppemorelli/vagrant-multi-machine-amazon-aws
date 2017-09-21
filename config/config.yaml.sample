@@ -2,72 +2,77 @@
 ##                                    ##
 ## GMdotnet                           ##
 ## Vagrant Multi Machine Amazon AWS   ##
-## Version 0.0.1                      ##
+## Version 1.0.0                      ##
 ##                                    ##
 ## Config file                        ##
 ########################################
 
 gmdotnet:
-  - host:
-      # enable or not the machine
-      # if you not enable the machine, it will not be created
-      enable: yes
-      vagrantbox_name: gmweb
-      hostname: gmweb.vagrant
-      aws:
-        access_key_id: YOUR_ACCESS_KEY_ID
-        secret_access_key: YOUR_SECRET_ACCESS_KEY
-        session_token:
-        ami: ami-11c57862 # for debian
-        region: eu-west-1
-        availability_zone:  # leave empty to use Amazon default
-        instance_type: t2.nano
-        security_groups: ['your-security-group'] # leave empty if you want to use 'default security group', otherwise use array like ['your-security-group']
-        tenancy: default # Support: 'default' or 'dedicated'
-        enable_monitoring: false # set to true if you want to enable monitoring
-        terminate_on_shutdown: false # set to true if you want to terminate the instance on vagrant halt
-        elb:  # name of elastic load balancer
-        block_device_mapping: # "[{ 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => 50 }]" # copy to increase disk size
-        user_data:  # add your userdata aws
-        vpc: # amazon virtual private cloud http://aws.amazon.com/vpc/
-          private_ip_address:
-          elastic_ip:
-        ssh:
-          keypair_name: your_keypair_name
-          private_key_path: ~/.ssh/id_rsa # path to your ssh private key
-          override_root_username: admin
-      provision:
-        ansible:
-          enable: no
-          playbook_path: "ansible/playbook.yml"
-        script:
-          enable: no
-          path: "script/backup_database.sh"
-      plugin:
-        hostsupdater:
-          enable: no    # enable hostsupdater plugin
-          permanent: no  # your changes to /etc/hosts will be permanent
-          aliases: ["alias.gmweb", "alias2.gmweb"]  # alias for same ip in your file hosts, leave blank for no aliases
-      # RSYNC FOLDERS
-      rsync:
-#          - folder:
-#              host_folder: /mnt/extra/rsync
-#              vagrant_folder: /mnt/extra/rsync
-#              options:
-#                  - "-a"
-#                  - "-r"
-#                  - "-v"
-#                  - "-z"
-#                  - "--delete"
-#              exclude:
-#                  - "myfolder"
-#          - folder:
-#              host_folder: /mnt/extra/rsync2
-#              vagrant_folder: /mnt/extra/rsync2
-#              options:
-#                  - "-a"
-#                  - "-r"
-#                  - "-v"
-#                  - "-z"
-#              exclude:
-#                  - "myfolder"
+    - host:
+        # MACHINE
+        enable: yes
+        vagrantbox_name: gmweb
+        hostname: gmweb.vagrant
+        aws:
+            access_key_id: <access_key_id>
+            secret_access_key: <secret_access_key>
+            session_token:
+            ami: ami-11c57862
+            region: eu-west-1
+            availability_zone:
+            instance_type: t2.nano
+            security_groups: ['security-group']
+            iam_instance_profile_name:
+            iam_instance_profile_arn:
+            tenancy: default
+            enable_monitoring: false
+            terminate_on_shutdown: false
+            elb:
+            block_device_mapping:
+            user_data:
+            tags:
+                Name: gmweb
+                project: test
+            vpc:
+                private_ip_address:
+                elastic_ip:
+                subnet_id:
+                associate_public_ip: false
+            ssh:
+                keypair_name: keypair_name@your_aws
+                private_key_path: ~/.ssh/id_rsa
+                override_root_username: admin
+        # PROVISION
+        provision:
+            ansible:
+                enable: no
+                playbook_path: "ansible/playbook.yml"
+            script:
+                enable: no
+                path: "script/backup_database.sh"
+        # PLUGINS
+        plugins:
+            hostsupdater:
+                enable: no
+                permanent: no
+                aliases: ["alias.gmweb", "alias2.gmweb"]
+        rsync:
+#            - folder:
+#                host_folder: /mnt/mysync
+#                vagrant_folder: /mnt/rsyncfolder
+#                options:
+#                    - "-a"
+#                    - "-r"
+#                    - "-v"
+#                    - "-z"
+#                    - "--delete"
+#            - folder:
+#                host_folder: /mnt/extra/rsync2
+#                vagrant_folder: /mnt/extra/rsync2
+#                options:
+#                    - "-a"
+#                    - "-r"
+#                    - "-v"
+#                    - "-z"
+#                exclude:
+#                    - "myfolder"

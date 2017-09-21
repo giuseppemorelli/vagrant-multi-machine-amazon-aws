@@ -5,7 +5,7 @@
 ##                                    ##
 ## GMdotnet                           ##
 ## Vagrant Multi Machine Amazon AWS   ##
-## Version 0.0.1                      ##
+## Version 1.0.0                      ##
 ##                                    ##
 ########################################
 
@@ -27,15 +27,15 @@ Vagrant.configure("2") do |config|
                 vmhost.vm.box = "dummy"
 
                 # Hostsupdater plugin
-                if host['plugin']['hostsupdater']['enable'] == true
+                if host['plugins']['hostsupdater']['enable'] == true
 
                     # Hostsupdater aliases
-                    if host['plugin']['hostsupdater']['aliases'] != nil
-                        vmhost.hostsupdater.aliases = host['plugin']['hostsupdater']['aliases']
+                    if host['plugins']['hostsupdater']['aliases'] != nil
+                        vmhost.hostsupdater.aliases = host['plugins']['hostsupdater']['aliases']
                     end
 
                     # Hostsupdater permanent role
-                    if host['plugin']['hostsupdater']['permanent'] == true
+                    if host['plugins']['hostsupdater']['permanent'] == true
                         vmhost.hostsupdater.remove_on_suspend = false
                     end
 
@@ -55,8 +55,10 @@ Vagrant.configure("2") do |config|
                       rsync['folder']['options'].each do |options|
                           rsyncoptions.push(options)
                       end
-                      rsync['folder']['exclude'].each do |options|
-                          rsyncexclude.push(options)
+                      if rsync['folder']['exclude'] != nil
+                          rsync['folder']['exclude'].each do |options|
+                              rsyncexclude.push(options)
+                          end
                       end
                       vmhost.vm.synced_folder rsync['folder']['host_folder'], rsync['folder']['vagrant_folder'], type: "rsync",
                           rsync__args: rsyncoptions,
@@ -75,21 +77,24 @@ Vagrant.configure("2") do |config|
                     provider.keypair_name = host['aws']['ssh']['keypair_name']
                     provider.ami = host['aws']['ami']
                     provider.region = host['aws']['region']
+                    provider.availability_zone = host['aws']['availability_zone']
                     provider.instance_type = host['aws']['instance_type']
                     provider.security_groups = host['aws']['security_groups']
+                    provider.iam_instance_profile_name = host['aws']['iam_instance_profile_name']
+                    provider.iam_instance_profile_arn = host['aws']['iam_instance_profile_arn']
                     provider.monitoring = host['aws']['enable_monitoring']
                     provider.terminate_on_shutdown = host['aws']['terminate_on_shutdown']
                     provider.private_ip_address = host['aws']['vpc']['private_ip_address']
-                    provider.elastic_ip = host['aws']['ssh']['elastic_ip']
+                    provider.elastic_ip = host['aws']['vpc']['elastic_ip']
+                    provider.subnet_id = host['aws']['vpc']['subnet_id']
+                    provider.associate_public_ip = host['aws']['vpc']['associate_public_ip']
                     provider.elb = host['aws']['elb']
                     if host['aws']['block_device_mapping'] != nil
                         provider.block_device_mapping = host['aws']['block_device_mapping']
                     end
                     provider.user_data = host['aws']['user_data']
                     provider.tenancy = host['aws']['tenancy']
-                    provider.tags = {
-                  	  'Name' => host['hostname']
-                    }
+                    provider.tags = host['aws']['tags']
                     override.ssh.username = host['aws']['ssh']['override_root_username']
                     override.ssh.private_key_path = host['aws']['ssh']['private_key_path']
                 end
