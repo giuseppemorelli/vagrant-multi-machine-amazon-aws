@@ -1,0 +1,78 @@
+########################################
+##                                    ##
+## GMdotnet                           ##
+## Vagrant Multi Machine Amazon AWS   ##
+## Version 1.0.0                      ##
+##                                    ##
+## Config file                        ##
+########################################
+
+gmdotnet:
+    - host:
+        # MACHINE
+        enable: yes
+        vagrantbox_name: gmweb
+        hostname: gmweb.vagrant
+        aws:
+            access_key_id: <access_key_id>
+            secret_access_key: <secret_access_key>
+            session_token:
+            ami: ami-11c57862
+            region: eu-west-1
+            availability_zone:
+            instance_type: t2.nano
+            security_groups: ['security-group']
+            iam_instance_profile_name:
+            iam_instance_profile_arn:
+            tenancy: default
+            enable_monitoring: false
+            terminate_on_shutdown: false
+            elb:
+            block_device_mapping:
+            user_data:
+            tags:
+                Name: gmweb
+                project: test
+            vpc:
+                private_ip_address:
+                elastic_ip:
+                subnet_id:
+                associate_public_ip: false
+            ssh:
+                keypair_name: keypair_name@your_aws
+                private_key_path: ~/.ssh/id_rsa
+                override_root_username: admin
+        # PROVISION
+        provision:
+            ansible:
+                enable: no
+                playbook_path: "ansible/playbook.yml"
+            script:
+                enable: no
+                path: "script/backup_database.sh"
+        # PLUGINS
+        plugins:
+            hostsupdater:
+                enable: no
+                permanent: no
+                aliases: ["alias.gmweb", "alias2.gmweb"]
+        rsync:
+#            - folder:
+#                host_folder: /mnt/mysync
+#                vagrant_folder: /mnt/rsyncfolder
+#                options:
+#                    - "-a"
+#                    - "-r"
+#                    - "-v"
+#                    - "-z"
+#                    - "--delete"
+#            - folder:
+#                host_folder: /mnt/extra/rsync2
+#                vagrant_folder: /mnt/extra/rsync2
+#                options:
+#                    - "-a"
+#                    - "-r"
+#                    - "-v"
+#                    - "-z"
+#                exclude:
+#                    - "myfolder"
