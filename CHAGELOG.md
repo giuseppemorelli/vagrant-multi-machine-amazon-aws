@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0 - unpublished
+## 1.0.0
 - [dev] stable version
 
 ## 0.0.1

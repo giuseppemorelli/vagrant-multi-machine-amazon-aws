@@ -1,4 +1,5 @@
 # AWS REGION LIST
+(to be completed)
 
 ## Europe
 - Ireland: *eu-west-1* 
